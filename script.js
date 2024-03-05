@@ -1,4 +1,12 @@
 const form = document.querySelector("form");
+const modalSuccess = new bootstrap.Modal(
+  document.getElementById("modalSuccess"),
+  focus
+);
+const modalFail = new bootstrap.Modal(
+  document.getElementById("modalFail"),
+  focus
+);
 
 form.addEventListener("submit", (event) => {
   if (!form.checkValidity()) {
@@ -16,15 +24,16 @@ form.addEventListener("submit", (event) => {
       }
     )
       .then((res) => {
-        console.log(res);
-        if (res == "success") {
-          console.log("form submitted successfully");
+        if (res.status === 200) {
+          form.reset();
+          modalSuccess.show();
         } else {
-          console.log("appscript error");
+          modalFail.show();
         }
       })
       .catch((error) => {
-        console.error("network error: ", error);
+        modalFail.show();
+        console.log(error);
       });
   }
 });
